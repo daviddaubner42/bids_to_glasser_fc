@@ -1,0 +1,11 @@
+# Specify the directories on your systems
+
+# The BIDS directory with data to be processed
+datadir: 
+# The directory with the Snakemake pipeline specification
+rootdir: 
+
+# The singularity containers used by the pipeline
+containers:
+  fmriprep: docker://nipreps/fmriprep:latest
+  xcp_d: docker://pennlinc/xcp_d:latest
