@@ -118,10 +118,15 @@ for l in list_dir:
     func_subdir_ses2 = os.path.join(target_dir, f"sub-{subject_id}", "ses-2", "func")
 
     # Copy and rename the files
+    print("-------- ANAT --------")
     copy_and_rename_files(source_dir, target_dir, files_to_copy_anat, anat_subdir, anat_rename_map)
-    copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap, fmap_subdir_ses1, fmap_rename_map_ses1)
+    # print("-------- FMAP --------")
+    # copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap, fmap_subdir_ses1, fmap_rename_map_ses1)
+    print("-------- FUNC --------")
     copy_and_rename_files(source_dir, target_dir, files_to_copy_func, func_subdir, func_rename_map_ses1)
-    copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap_ses2, fmap_subdir_ses2, fmap_rename_map_ses2)
+    # print("-------- FMAP-2 --------")
+    # copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap_ses2, fmap_subdir_ses2, fmap_rename_map_ses2)
+    print("-------- FUNC-2 --------")
     copy_and_rename_files(source_dir, target_dir, files_to_copy_func_ses2, func_subdir_ses2, func_rename_map_ses2)
 
     logging.debug(f"File copying and renaming completed.")

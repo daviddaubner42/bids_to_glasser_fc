@@ -21,9 +21,9 @@ def copy_and_rename_files(source_dir, target_dir, file_list, target_subdir, rena
                 
                 # Check if a rename map exists, and rename the file if needed
                 if rename_map and file_name in rename_map:
-                    file_name = rename_map[file_name]
+                    new_file_name = rename_map[file_name]
 
-                target_file = os.path.join(target_subdir, file_name)
+                target_file = os.path.join(target_subdir, new_file_name)
 
                 shutil.copy(source_file, target_file)
                 print(f"Copied and renamed {file_name} from {source_file} to {target_file}")
