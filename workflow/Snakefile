@@ -33,7 +33,7 @@ endfiles = [
     #     "func",
     #     "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     # )
-    directory(os.path.join(rawdir, "BIDS"))
+    os.path.join(rawdir, "BIDS", "dataset_description.json")    
 ]
 
 # Define the subject IDs to be processed
@@ -55,25 +55,22 @@ rule bidsify:
     params:
         workflow_dir = workflowdir
     output:
-        directory(os.path.join(rawdir, "BIDS"))
+        # directory(os.path.join(rawdir, "BIDS"))
+        os.path.join(rawdir, "BIDS", "dataset_description.json")
     shell:
-        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {input} --target_dir {output}"
+        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {input} --target_dir {params.workflow_dir}/datadir/BIDS && "
+        "touch {output}"
 
 # Apply fMRIPrep preprocessing pipeline to the data
 # https://fmriprep.org/en/stable/
 rule fmriprep:
     input:
-        os.path.join(rawdir, "sub-{subid}", "anat", "sub-{subid}_T1w.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "anat", "sub-{subid}_T2w.nii.gz"), # comment out if your data does not contain T2
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_magnitude1.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_magnitude2.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_phasediff.nii.gz"),
-        os.path.join(
-            rawdir,
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_bold.nii.gz"
-        )
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "anat", "sub-{subid}_T1w.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "anat", "sub-{subid}_T2w.nii.gz"), # comment out if your data does not contain T2
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_magnitude1.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_magnitude2.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_phasediff.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "func", "sub-{subid}_task-rest_bold.nii.gz")
     params:
         bids_dir=rawdir,
         out_dir=outdir,
