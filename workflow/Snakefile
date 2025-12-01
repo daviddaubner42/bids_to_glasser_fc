@@ -33,7 +33,7 @@ endfiles = [
     #     "func",
     #     "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     # )
-    os.path.join(rawdir, "BIDS", "dataset_description.json")
+    directory(os.path.join(rawdir, "BIDS"))
 ]
 
 # Define the subject IDs to be processed
