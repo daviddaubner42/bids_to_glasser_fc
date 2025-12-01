@@ -57,7 +57,7 @@ rule bidsify:
     output:
         os.path.join(rawdir, "BIDS", "dataset_description.json")
     shell:
-        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {input} --target_dir {output} "
+        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {input} --target_dir {output} && "
         "touch {output}"
 
 # Apply fMRIPrep preprocessing pipeline to the data
