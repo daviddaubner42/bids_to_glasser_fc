@@ -1,6 +1,6 @@
 # Specify the directories on your systems
 
-# The BIDS directory with data to be processed
+# The HCP directory with data to be processed
 datadir: 
 # The directory with the Snakemake pipeline specification
 rootdir: 
