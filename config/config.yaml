@@ -7,5 +7,5 @@ rootdir: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc"
 
 # The singularity containers used by the pipeline
 containers:
-  fmriprep: docker://nipreps/fmriprep:latest
-  xcp_d: docker://pennlinc/xcp_d:latest
+  fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep.sif"
+  xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcpd.sif"
