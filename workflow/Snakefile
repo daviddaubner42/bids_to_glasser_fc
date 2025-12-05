@@ -19,21 +19,20 @@ os.makedirs(outdir, exist_ok=True)
 # Specifies the files which should exist at the end of the processing
 endfiles = [
     # In this case, it is the average time series for each of the ROIs, and the FC matrix
-    # os.path.join(
-    #     outdir,
-    #     "xcp_d",
-    #     "sub-{subid}",
-    #     "func",
-    #     "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
-    # ),
-    # os.path.join(
-    #     outdir,
-    #     "xcp_d",
-    #     "sub-{subid}",
-    #     "func",
-    #     "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
-    # )
-    os.path.join(rawdir, "BIDS", "dataset_description.json")    
+    os.path.join(
+        outdir,
+        "xcp_d",
+        "sub-{subid}",
+        "func",
+        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+    ),
+    os.path.join(
+        outdir,
+        "xcp_d",
+        "sub-{subid}",
+        "func",
+        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+    )    
 ]
 
 # Define the subject IDs to be processed
@@ -49,28 +48,34 @@ rule all:
     input:
         expand(endfiles, subid=subids)
 
+# Transform an HCP dataset into a BIDS format
 rule bidsify:
     input:
-        os.path.join(rawdir, "HCP")
+        directory(os.path.join(rawdir, "HCP", "{subid}_01_MR"))
     params:
-        workflow_dir = workflowdir
+        workflow_dir = workflowdir,
+        data_dir = rawdir,
+        subid = "{subid}"
     output:
-        # directory(os.path.join(rawdir, "BIDS"))
-        os.path.join(rawdir, "BIDS", "dataset_description.json")
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     shell:
-        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {input} --target_dir {params.workflow_dir}/datadir/BIDS && "
-        "touch {output}"
+        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {params.data_dir} --target_dir {params.data_dir}/BIDS --subid {params.subid}"
 
 # Apply fMRIPrep preprocessing pipeline to the data
 # https://fmriprep.org/en/stable/
 rule fmriprep:
     input:
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "anat", "sub-{subid}_T1w.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "anat", "sub-{subid}_T2w.nii.gz"), # comment out if your data does not contain T2
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_magnitude1.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_magnitude2.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "fmap", "sub-{subid}_phasediff.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "func", "sub-{subid}_task-rest_bold.nii.gz")
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     params:
         bids_dir=rawdir,
         out_dir=outdir,
@@ -85,7 +90,14 @@ rule fmriprep:
             "fmriprep",
             "sub-{subid}",
             "func",
-            "sub-{subid}_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
+            "sub-{subid}_ses-1_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
+        ),
+        os.path.join(
+            outdir,
+            "fmriprep",
+            "sub-{subid}",
+            "func",
+            "sub-{subid}_ses-2_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
         )
     container:
         config["containers"]["fmriprep"]
@@ -96,6 +108,7 @@ rule fmriprep:
         "--fs-license-file {params.fs_license_dir}/license.txt "
         "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
+        "--session-label 1 2 "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
         "--skip-bids-validation "
@@ -114,7 +127,14 @@ rule xcp_d:
             "fmriprep",
             "sub-{subid}",
             "func",
-            "sub-{subid}_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
+            "sub-{subid}_ses-1_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
+        ),
+        os.path.join(
+            outdir,
+            "fmriprep",
+            "sub-{subid}",
+            "func",
+            "sub-{subid}_ses-2_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
         )
     params:
         out_dir=outdir,
@@ -130,14 +150,28 @@ rule xcp_d:
             "xcp_d",
             "sub-{subid}",
             "func",
-            "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
             "xcp_d",
             "sub-{subid}",
             "func",
-            "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        ),
+        os.path.join(
+            outdir,
+            "xcp_d",
+            "sub-{subid}",
+            "func",
+            "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        ),
+        os.path.join(
+            outdir,
+            "xcp_d",
+            "sub-{subid}",
+            "func",
+            "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         )
     container:
         config["containers"]["xcp_d"]
@@ -148,6 +182,7 @@ rule xcp_d:
         "{params.out_dir}/xcp_d "
         "participant "
         "--participant-label {wildcards.subid} "
+        "--session-id 1 2 "
         "--mode linc "
         "--despike "
         "--nuisance-regressors acompcor "
