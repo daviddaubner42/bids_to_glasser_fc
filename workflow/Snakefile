@@ -24,19 +24,33 @@ endfiles = [
         "xcp_d",
         "sub-{subid}",
         "func",
-        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
         "xcp_d",
         "sub-{subid}",
         "func",
-        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
-    )    
+        "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+    ),
+    os.path.join(
+        outdir,
+        "xcp_d",
+        "sub-{subid}",
+        "func",
+        "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+    ),
+    os.path.join(
+        outdir,
+        "xcp_d",
+        "sub-{subid}",
+        "func",
+        "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+    )   
 ]
 
 # Define the subject IDs to be processed
-subids = ["LEGK010"]
+subids = ["1001"]
 # E.g. this should select all the subject IDs present in your BIDS directory
 # subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
 
