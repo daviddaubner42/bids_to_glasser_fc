@@ -31,14 +31,14 @@ endfiles = [
         "xcp_d",
         "sub-{subid}",
         "func",
-        "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     ),
     os.path.join(
         outdir,
         "xcp_d",
         "sub-{subid}",
         "func",
-        "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
@@ -65,7 +65,7 @@ rule all:
 # Transform an HCP dataset into a BIDS format
 rule bidsify:
     input:
-        directory(os.path.join(rawdir, "HCP", "{subid}_01_MR"))
+        os.path.join(rawdir, "HCP", "{subid}_01_MR", "unprocessed", "T1w_MPR", "{subid}_01_MR_T1w_MPR.nii.gz")
     params:
         workflow_dir = workflowdir,
         data_dir = rawdir,
@@ -171,14 +171,14 @@ rule xcp_d:
             "xcp_d",
             "sub-{subid}",
             "func",
-            "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         ),
         os.path.join(
             outdir,
             "xcp_d",
             "sub-{subid}",
             "func",
-            "sub-{subid}_ses-1_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-2_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
