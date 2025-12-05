@@ -92,7 +92,7 @@ rule fmriprep:
         os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
         os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     params:
-        bids_dir=rawdir,
+        bids_dir=os.path.join(rawdir, "BIDS"),
         out_dir=outdir,
         fs_license_dir=resourcedir
     threads: 8
