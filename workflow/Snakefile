@@ -69,7 +69,8 @@ rule bidsify:
     params:
         workflow_dir = workflowdir,
         data_dir = rawdir,
-        subid = "{subid}"
+        subid = "{subid}",
+        resource_dir = resourcedir
     output:
         os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
         os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
@@ -79,7 +80,7 @@ rule bidsify:
         os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     shell:
         "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {params.data_dir}/HCP --target_dir {params.data_dir}/BIDS --subid {params.subid} && "
-        "touch {params.data_dir}/BIDS/dataset_description.json"
+        "cp {params.resource_dir}/dataset_description.json {params.data_dir}/BIDS/dataset_description.json"
 
 # Apply fMRIPrep preprocessing pipeline to the data
 # https://fmriprep.org/en/stable/
