@@ -122,8 +122,8 @@ func_subdir_ses2 = os.path.join(target_dir, f"sub-{subject_id}", "ses-2", "func"
 # Copy and rename the files
 print("-------- ANAT --------")
 copy_and_rename_files(source_dir, target_dir, files_to_copy_anat, anat_subdir, anat_rename_map)
-# print("-------- FMAP --------")
-# copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap, fmap_subdir_ses1, fmap_rename_map_ses1)
+print("-------- FMAP --------")
+copy_and_rename_files(source_dir, target_dir, files_to_copy_fmap, fmap_subdir_ses1, fmap_rename_map_ses1)
 print("-------- FUNC --------")
 copy_and_rename_files(source_dir, target_dir, files_to_copy_func, func_subdir, func_rename_map_ses1)
 # print("-------- FMAP-2 --------")
