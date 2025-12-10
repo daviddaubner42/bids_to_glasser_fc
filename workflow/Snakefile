@@ -65,7 +65,7 @@ rule all:
 # Transform an HCP dataset into a BIDS format
 rule bidsify:
     input:
-        os.path.join(rawdir, "HCP", "{subid}_01_MR", "unprocessed", "T1w_MPR", "{subid}_01_MR_T1w_MPR.nii.gz")
+        os.path.join(rawdir, "imagingcollection01", "{subid}_01_MR", "unprocessed", "T1w_MPR", "{subid}_01_MR_T1w_MPR.nii.gz")
     params:
         workflow_dir = workflowdir,
         data_dir = rawdir,
