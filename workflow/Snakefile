@@ -108,6 +108,9 @@ rule fmriprep:
     threads: 8
     resources:
         mem='32G',
+        mem_mib='32000',
+        disk_mb='32000',
+        disk_mib='32000',
         time='12:00:00'
     output:
         os.path.join(
