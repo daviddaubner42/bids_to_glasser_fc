@@ -107,7 +107,7 @@ rule fmriprep:
         fs_license_dir=resourcedir
     threads: 8
     resources:
-        mem='16G',
+        mem='32G',
         time='12:00:00'
     output:
         os.path.join(
