@@ -132,7 +132,7 @@ rule fmriprep:
         "{params.bids_dir} {params.out_dir}/fmriprep participant "
         "--fs-license-file {params.fs_license_dir}/license.txt "
         "--work-dir {params.out_dir}/temp "
-        "--skip-bids-validation "
+        # "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
         "--session-label 1 2 "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
