@@ -134,7 +134,7 @@ rule fmriprep:
         "--work-dir {params.out_dir}/temp "
         # "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
-        "--session-label 1 2 "
+        # "--session-label 1 2 "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
         "--skip-bids-validation "

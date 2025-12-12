@@ -7,5 +7,5 @@ rootdir: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc"
 
 # The singularity containers used by the pipeline
 containers:
-  fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep.sif"
+  fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep-25.sif"
   xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcpd.sif"
