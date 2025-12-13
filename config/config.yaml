@@ -2,12 +2,14 @@
 
 # The HCP directory with data to be processed
 # datadir: "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_2025/HCPEP2025-full_dataset"
-datadir: "/datadir"
+datadir: "/data"
 # The directory with the Snakemake pipeline specification
 # rootdir: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc"
 rootdir: "/root"
 
 # The singularity containers used by the pipeline
 containers:
-  fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep-25.sif"
-  xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcpd.sif"
+  # fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep-25.sif"
+  fmriprep: "/root/.snakemake/singularity/fmriprep-25.sif"
+  xcp_d: "/root/.snakemake/singularity/xcp_d.sif"
+  # xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcpd.sif"
