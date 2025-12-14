@@ -105,7 +105,7 @@ rule fmriprep:
         bids_dir=os.path.join(rawdir, "BIDS"),
         out_dir=outdir,
         fs_license_dir=resourcedir,
-        root_dir=rootdir
+        # root_dir=rootdir
     threads: 8
     resources:
         mem='32G',
