@@ -86,7 +86,7 @@ endfiles = [
 ]
 
 # Define the subject IDs to be processed
-subids = ["1001"]
+subids = ["1002", "1003", "1004", "1005", "1006", "1007", "1009", "1010", "1011", "1012"]
 # E.g. this should select all the subject IDs present in your BIDS directory
 # subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
 
@@ -141,6 +141,7 @@ rule fmriprep:
         bids_dir=os.path.join(rawdir, "BIDS"),
         out_dir=outdir,
         fs_license_dir=resourcedir,
+        workflow_dir=workflowdir
         # root_dir=rootdir
     threads: 8
     resources:
@@ -197,7 +198,9 @@ rule fmriprep:
         "--cifti-output "
         "--skip-bids-validation "
         "--nthreads 16 "
-        "--omp-nthreads 16"
+        "--omp-nthreads 16 && "
+        "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
+        "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat"
 
 
 
@@ -316,8 +319,6 @@ rule xcp_d:
         config["containers"]["xcp_d"]
     shell:
         "rm -rf {params.workflow_dir}/working_dir && "
-        "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
-        "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
         "xcp_d "
         "{params.out_dir}/fmriprep "
         "{params.out_dir}/xcp_d "
