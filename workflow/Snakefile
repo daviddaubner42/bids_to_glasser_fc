@@ -200,6 +200,7 @@ rule fmriprep:
         "--omp-nthreads 16"
 
 
+
 # Apply XCP-D to the fMRIPrep processed data using the Desikan-Killiany atlas we created from FreeSurfer parcellation
 # To change the preprocessing parameters, such as the smoothing kernel width, confounds to be used for denoising, etc.
 # you can change the command line arguments to XCP-D in the shell command bellow. The usage instructions can be found here:
@@ -315,6 +316,8 @@ rule xcp_d:
         config["containers"]["xcp_d"]
     shell:
         "rm -rf {params.workflow_dir}/working_dir && "
+        "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
+        "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
         "xcp_d "
         "{params.out_dir}/fmriprep "
         "{params.out_dir}/xcp_d "
