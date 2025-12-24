@@ -89,7 +89,7 @@ endfiles = [
 # subids = ["1002", "1003", "1004", "1005", "1006", "1009", "1010", "1012"]
 # E.g. this should select all the subject IDs present in your BIDS directory
 # subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
-subids = [fname[:4] for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")) if os.path.exist(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "{fname}_T1w_MPR.nii.gz"))]
+subids = [fname[:4] for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")) if os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", f"{fname}_T1w_MPR.nii.gz"))]
 
 
 rule all:
