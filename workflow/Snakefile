@@ -150,7 +150,7 @@ rule fmriprep:
         mem_mib='32000',
         disk_mb='32000',
         disk_mib='32000',
-        time='24:00:00'
+        time='5-00:00:00'
     output:
         os.path.join(
             outdir,
@@ -250,7 +250,7 @@ rule xcp_d:
     threads: 8
     resources:
         mem='32G',
-        time='12:00:00'
+        time='1-00:00:00'
     output:
         os.path.join(
             outdir,
