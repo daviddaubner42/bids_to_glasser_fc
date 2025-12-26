@@ -196,7 +196,7 @@ rule fmriprep:
         # "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
         # "--session-label 1 2 "
-        "--clean-workdir "
+        # "--clean-workdir "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
         "--skip-bids-validation "
