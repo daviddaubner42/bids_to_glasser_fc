@@ -195,13 +195,15 @@ rule fmriprep:
         # "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
         # "--session-label 1 2 "
+        "--clean-workdir "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
         "--skip-bids-validation "
         "--nthreads 16 "
         "--omp-nthreads 16 && "
         "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
-        "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat"
+        "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
+        "rm -rf {params.out_dir}/temp"
 
 
 
