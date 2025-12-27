@@ -12,4 +12,4 @@ containers:
   fmriprep: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/fmriprep-25.sif"
   # fmriprep: "/root/.snakemake/singularity/fmriprep-25.sif"
   # xcp_d: "/root/.snakemake/singularity/xcp_d.sif"
-  xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcp_d_latest.sif"
+  xcp_d: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc/.snakemake/singularity/xcpd.sif"

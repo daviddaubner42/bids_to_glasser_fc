@@ -328,7 +328,7 @@ rule xcp_d:
         "{params.out_dir}/xcp_d "
         "participant "
         "--participant-label {wildcards.subid} "
-        "--session-id 1 2 "
+        # "--session-id 1 2 "
         "--mode linc "
         "--despike "
         "--nuisance-regressors acompcor "
