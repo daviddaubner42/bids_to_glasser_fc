@@ -91,7 +91,7 @@ endfiles = [
 # E.g. this should select all the subject IDs present in your BIDS directory
 # subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
 subids = [fname[:4] for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")) if os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", f"{fname}_T1w_MPR.nii.gz"))]
-subids = subids[:5]
+# subids = subids[:5]
 
 rule all:
     """
@@ -108,39 +108,40 @@ rule bidsify:
         workflow_dir = workflowdir,
         data_dir = rawdir,
         subid = "{subid}",
+        out_dir = outdir,
         resource_dir = resourcedir
     output:
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-AP_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-PA_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-AP_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-PA_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-AP_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-PA_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-AP_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-PA_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     shell:
-        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {params.data_dir}/imagingcollection01 --target_dir {params.data_dir}/BIDS --subid {params.subid} && "
-        "python {params.workflow_dir}/fmap_insert_intended_for.py --target_dir {params.data_dir}/BIDS --subid {params.subid} && "
-        "cp {params.resource_dir}/dataset_description.json {params.data_dir}/BIDS/dataset_description.json"
+        "python {params.workflow_dir}/bidsifyhcp/main.py --hcp_dir {params.data_dir}/imagingcollection01 --target_dir {params.out_dir}/BIDS --subid {params.subid} && "
+        "python {params.workflow_dir}/fmap_insert_intended_for.py --target_dir {params.out_dir}/BIDS --subid {params.subid} && "
+        "cp {params.resource_dir}/dataset_description.json {params.out_dir}/BIDS/dataset_description.json"
 
 # Apply fMRIPrep preprocessing pipeline to the data
 # https://fmriprep.org/en/stable/
 rule fmriprep:
     input:
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-AP_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-PA_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-AP_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-PA_epi.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
-        os.path.join(rawdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-AP_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "fmap", "sub-{subid}_ses-1_task-rest_dir-PA_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-AP_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "fmap", "sub-{subid}_ses-2_task-rest_dir-PA_epi.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "func", "sub-{subid}_ses-1_task-rest_dir-PA_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-AP_bold.nii.gz"),
+        os.path.join(outdir, "BIDS", "sub-{subid}", "ses-2", "func", "sub-{subid}_ses-2_task-rest_dir-PA_bold.nii.gz"),
     params:
-        bids_dir=os.path.join(rawdir, "BIDS"),
+        bids_dir=os.path.join(outdir, "BIDS"),
         out_dir=outdir,
         fs_license_dir=resourcedir,
         workflow_dir=workflowdir
