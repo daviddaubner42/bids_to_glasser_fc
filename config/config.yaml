@@ -1,8 +1,9 @@
 # Specify the directories on your systems
 
 # The HCP directory with data to be processed
-# datadir: "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_2025/HCPEP2025-full_dataset"
-datadir: "/datadir"
+datadir: "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_2025/HCPEP2025-full_dataset"
+outdir: "data/cephfs-2/unmirrored/groups/ritter/MR_processing/hcp_derivatives"
+# datadir: "/datadir"
 # The directory with the Snakemake pipeline specification
 rootdir: "/data/cephfs-1/work/groups/ritter/users/dada15_c/bids_to_glasser_fc"
 # rootdir: "/workdir"

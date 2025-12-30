@@ -6,7 +6,8 @@ configfile: "config/config.yaml"
 report: "workflow.rst"
 
 rawdir = join(config["datadir"]) # the directory with data to be processed
-outdir = join(config["datadir"], "derivatives") # the directory where derivatives are to be stored
+# outdir = join(config["datadir"], "derivatives") # the directory where derivatives are to be stored
+outdir = config["outdir"]
 
 environmentdir = join(config["rootdir"], "envs")
 resourcedir = join(config["rootdir"], "resources")
