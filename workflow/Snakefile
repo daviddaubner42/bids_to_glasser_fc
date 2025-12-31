@@ -163,7 +163,8 @@ rule fmriprep:
         bids_dir=os.path.join(outdir, "BIDS"),
         out_dir=outdir,
         fs_license_dir=resourcedir,
-        workflow_dir=workflowdir
+        workflow_dir=workflowdir,
+        data_dir = rawdir
         # root_dir=rootdir
     threads: 16
     resources:
@@ -213,7 +214,7 @@ rule fmriprep:
         "fmriprep "
         "{params.bids_dir} {params.out_dir}/fmriprep participant "
         "--fs-license-file {params.fs_license_dir}/license.txt "
-        "--work-dir {params.out_dir}/temp "
+        "--work-dir {params.data_dir}/temp "
         # "--bids-database-dir {params.out_dir}/temp/bids_database_dir "
         "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
