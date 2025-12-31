@@ -6,8 +6,8 @@ configfile: "config/config.yaml"
 report: "workflow.rst"
 
 rawdir = join(config["datadir"]) # the directory with data to be processed
-# outdir = join(config["datadir"], "derivatives") # the directory where derivatives are to be stored
-outdir = config["outdir"]
+outdir = join(config["datadir"], "derivatives") # the directory where derivatives are to be stored
+# outdir = config["outdir"]
 
 environmentdir = join(config["rootdir"], "envs")
 resourcedir = join(config["rootdir"], "resources")
@@ -214,7 +214,7 @@ rule fmriprep:
         "fmriprep "
         "{params.bids_dir} {params.out_dir}/fmriprep participant "
         "--fs-license-file {params.fs_license_dir}/license.txt "
-        "--work-dir {params.workflow_dir}/temp "
+        # "--work-dir {params.workflow_dir}/temp "
         # "--bids-database-dir {params.out_dir}/temp/bids_database_dir "
         "--skip-bids-validation "
         "--participant_label {wildcards.subid} "
