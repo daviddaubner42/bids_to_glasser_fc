@@ -110,6 +110,14 @@ rule bidsify:
         subid = "{subid}",
         out_dir = outdir,
         resource_dir = resourcedir
+    threads: 8
+    resources:
+        mem='16G',
+        mem_mib='16000',
+        disk_mb='16000',
+        disk_mib='16000',
+        mem_per_thread='16G',
+        time='01:00:00'
     output:
         os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T1w.nii.gz"),
         os.path.join(outdir, "BIDS", "sub-{subid}", "ses-1", "anat", "sub-{subid}_ses-1_T2w.nii.gz"),
@@ -146,7 +154,7 @@ rule fmriprep:
         fs_license_dir=resourcedir,
         workflow_dir=workflowdir
         # root_dir=rootdir
-    threads: 8
+    threads: 16
     resources:
         mem='32G',
         mem_mib='32000',
