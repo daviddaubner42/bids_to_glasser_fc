@@ -168,11 +168,11 @@ rule fmriprep:
         # root_dir=rootdir
     threads: 16
     resources:
-        mem='75G',
-        mem_mib='75000',
-        disk_mb='75000',
-        disk_mib='75000',
-        mem_per_thread='75G',
+        mem='100G',
+        mem_mib='100000',
+        disk_mb='100000',
+        disk_mib='100000',
+        mem_per_thread='100G',
         time='3-00:00:00'
     output:
         os.path.join(
@@ -223,8 +223,8 @@ rule fmriprep:
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
         "--skip-bids-validation "
-        "--nthreads 16 "
-        "--omp-nthreads 16 && "
+        "--nthreads 8 "
+        "--omp-nthreads 8 && "
         "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
         "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
         "rm -rf {params.out_dir}/temp"
