@@ -23,6 +23,6 @@ for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")):
         print(fname[:4], " no fMRI 2PA sbref")
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "OTHER_FILES", f"{fname}_SpinEchoFieldMap1_AP.nii.gz")):
         print(fname[:4], " no echo field map 1 AP in T1w")
-    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "OTHER_FILES", f"{fname}_SpinEchoFieldMap1_PA.nii.gz"))
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "OTHER_FILES", f"{fname}_SpinEchoFieldMap1_PA.nii.gz")):
         print(fname[:4], " no echo field map 1 PA in T1w")
     print('-------------------------')
