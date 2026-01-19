@@ -92,6 +92,7 @@ endfiles = [
 # subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
 subids = [fname[:4] for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")) 
     if os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", f"{fname}_T1w_MPR.nii.gz"))
+    and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T2w_SPC", f"{fname}_T2w_SPC.nii.gz"))
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_rfMRI_REST1_AP.nii.gz"))
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_rfMRI_REST1_AP_SBRef.nii.gz"))
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_PA", f"{fname}_rfMRI_REST1_PA.nii.gz"))

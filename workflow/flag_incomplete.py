@@ -5,6 +5,8 @@ rawdir = "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_20
 for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")):
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", f"{fname}_T1w_MPR.nii.gz")):
         print(fname[:4], " no T1w")
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T2w_SPC", f"{fname}_T2w_SPC.nii.gz")):
+        print(fname[:4], " no T2w")
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_rfMRI_REST1_AP.nii.gz")):
         print(fname[:4], " no fMRI 1AP")
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_rfMRI_REST1_AP_SBRef.nii.gz")):
