@@ -21,8 +21,12 @@ for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")):
         print(fname[:4], " no fMRI 2PA")
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST2_PA", f"{fname}_rfMRI_REST2_PA_SBRef.nii.gz")):
         print(fname[:4], " no fMRI 2PA sbref")
-    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "OTHER_FILES", f"{fname}_SpinEchoFieldMap1_AP.nii.gz")):
-        print(fname[:4], " no echo field map 1 AP in T1w")
-    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", "OTHER_FILES", f"{fname}_SpinEchoFieldMap1_PA.nii.gz")):
-        print(fname[:4], " no echo field map 1 PA in T1w")
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_SpinEchoFieldMap1_AP.nii.gz")):
+        print(fname[:4], " no echo field map 1 AP in rfMRI_REST1_AP")
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_SpinEchoFieldMap1_PA.nii.gz")):
+        print(fname[:4], " no echo field map 1 PA in rfMRI_REST1_AP")
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST2_AP", f"{fname}_SpinEchoFieldMap2_AP.nii.gz")):
+        print(fname[:4], " no echo field map 1 AP in rfMRI_REST2_AP")
+    if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST2_AP", f"{fname}_SpinEchoFieldMap2_PA.nii.gz")):
+        print(fname[:4], " no echo field map 1 PA in rfMRI_REST2_AP")
     print('-------------------------')
