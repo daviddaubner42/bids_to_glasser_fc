@@ -1,6 +1,6 @@
 import os
 
-rawdir = "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_2025/HCPEP2025-full_dataset"
+rawdir = "/data/cephfs-2/unmirrored/groups/ritter/MR_processing/HCP-EP/HCP-EP_2025/HCPEP2025-full_dataset/2026"
 
 for fname in os.listdir(os.path.join(rawdir, "imagingcollection01")):
     if not os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "T1w_MPR", f"{fname}_T1w_MPR.nii.gz")):
