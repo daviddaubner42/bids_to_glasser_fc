@@ -360,7 +360,6 @@ rule xcp_d:
         "{params.out_dir}/xcp_d "
         "participant "
         "--participant-label {wildcards.subid} "
-        "--work-dir {params.data_dir}/temp "
         # "--session-id 1 2 "
         "--mode linc "
         "--despike "
