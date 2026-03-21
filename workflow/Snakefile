@@ -280,7 +280,8 @@ rule xcp_d:
     params:
         out_dir=outdir,
         fs_license_dir=resourcedir,
-        workflow_dir=workflowdir
+        workflow_dir=workflowdir,
+        data_dir = rawdir
     threads: 8
     resources:
         mem='32G',
