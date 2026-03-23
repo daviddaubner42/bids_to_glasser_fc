@@ -222,7 +222,7 @@ rule fmriprep:
         "fmriprep "
         "{params.bids_dir} {params.out_dir}/fmriprep participant "
         "--fs-license-file {params.fs_license_dir}/license.txt "
-        "--work-dir {params.out_dir}/temp "
+        "--work-dir {params.out_dir}/temp_{wildcards.subid} "
         # "--bids-database-dir {params.out_dir}/temp/bids_database_dir "
         "--participant_label {wildcards.subid} "
         "--low-mem "
@@ -235,7 +235,7 @@ rule fmriprep:
         "--omp-nthreads 8 && "
         "cp -R {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-1/anat {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
         "python {params.workflow_dir}/rename_anat_files.py --anat_dir {params.out_dir}/fmriprep/sub-{wildcards.subid}/ses-2/anat && "
-        "rm -rf {params.out_dir}/temp"
+        "rm -rf {params.out_dir}/temp_{wildcards.subid}"
 
 
 
