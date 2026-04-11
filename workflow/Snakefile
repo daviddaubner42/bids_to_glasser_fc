@@ -132,7 +132,6 @@ rule bidsify:
     threads: 8
     resources:
         mem='16G',
-        mem_mib='16000',
         disk_mb='16000',
         disk_mib='16000',
         mem_per_thread='16G',
@@ -177,7 +176,6 @@ rule fmriprep:
     threads: 16
     resources:
         mem='100G',
-        mem_mib='100000',
         disk_mb='100000',
         disk_mib='100000',
         mem_per_thread='100G',
