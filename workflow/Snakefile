@@ -132,7 +132,7 @@ rule bidsify:
     threads: 8
     resources:
         mem='16G',
-        disk_mb='16000',
+        disk_mb=16000,
         mem_per_thread='16G',
         time='01:00:00'
     output:
@@ -175,7 +175,7 @@ rule fmriprep:
     threads: 16
     resources:
         mem='100G',
-        disk_mb='100000',
+        disk_mb=100000,
         mem_per_thread='100G',
         time='3-00:00:00'
     output:
