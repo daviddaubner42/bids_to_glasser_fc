@@ -26,7 +26,7 @@ endfiles = [
         "sub-{subid}",
         "ses-1",
         "func",
-        "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
@@ -34,7 +34,7 @@ endfiles = [
         "sub-{subid}",
         "ses-1",
         "func",
-        "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
@@ -42,7 +42,7 @@ endfiles = [
         "sub-{subid}",
         "ses-1",
         "func",
-        "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     ),
     os.path.join(
         outdir,
@@ -50,7 +50,7 @@ endfiles = [
         "sub-{subid}",
         "ses-1",
         "func",
-        "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     ),
     os.path.join(
         outdir,
@@ -58,7 +58,7 @@ endfiles = [
         "sub-{subid}",
         "ses-2",
         "func",
-        "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
@@ -66,7 +66,7 @@ endfiles = [
         "sub-{subid}",
         "ses-2",
         "func",
-        "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+        "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
     ),
     os.path.join(
         outdir,
@@ -74,7 +74,7 @@ endfiles = [
         "sub-{subid}",
         "ses-2",
         "func",
-        "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     ),
     os.path.join(
         outdir,
@@ -82,7 +82,7 @@ endfiles = [
         "sub-{subid}",
         "ses-2",
         "func",
-        "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+        "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
     )   
 ]
 
@@ -105,10 +105,10 @@ subids = [fname[:4] for fname in os.listdir(os.path.join(rawdir, "imagingcollect
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST1_AP", f"{fname}_SpinEchoFieldMap1_PA.nii.gz"))
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST2_AP", f"{fname}_SpinEchoFieldMap2_AP.nii.gz"))
     and os.path.exists(os.path.join(rawdir, "imagingcollection01", fname, "unprocessed", "rfMRI_REST2_AP", f"{fname}_SpinEchoFieldMap2_PA.nii.gz"))]
-    # and not (os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-1", "func", f"sub-{fname[:4]}_ses-1_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
-    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-1", "func", f"sub-{fname[:4]}_ses-1_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
-    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-2", "func", f"sub-{fname[:4]}_ses-2_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
-    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-2", "func", f"sub-{fname[:4]}_ses-2_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii")))]
+    # and not (os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-1", "func", f"sub-{fname[:4]}_ses-1_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
+    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-1", "func", f"sub-{fname[:4]}_ses-1_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
+    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-2", "func", f"sub-{fname[:4]}_ses-2_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"))
+    # and os.path.exists(os.path.join(outdir, "xcp_d", f"sub-{fname[:4]}", "ses-2", "func", f"sub-{fname[:4]}_ses-2_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii")))]
 
 # subids = ["1001", "1002", "1066", "1009", "1012", "1089"]
 
@@ -289,7 +289,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-1",
             "func",
-            "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
@@ -297,7 +297,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-1",
             "func",
-            "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
@@ -305,7 +305,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-1",
             "func",
-            "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-1_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         ),
         os.path.join(
             outdir,
@@ -313,7 +313,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-1",
             "func",
-            "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-1_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         ),
         os.path.join(
             outdir,
@@ -321,7 +321,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-2",
             "func",
-            "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
@@ -329,7 +329,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-2",
             "func",
-            "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
+            "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
         ),
         os.path.join(
             outdir,
@@ -337,7 +337,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-2",
             "func",
-            "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-2_task-rest_dir-AP_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         ),
         os.path.join(
             outdir,
@@ -345,7 +345,7 @@ rule xcp_d:
             "sub-{subid}",
             "ses-2",
             "func",
-            "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
+            "sub-{subid}_ses-2_task-rest_dir-PA_space-fsLR_atlas-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
         )
     container:
         config["containers"]["xcp_d"]
