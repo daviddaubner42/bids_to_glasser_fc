@@ -333,7 +333,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d"_26.1.0,
+            "xcp_d_26.1.0",
             "sub-{subid}",
             "ses-2",
             "func",
