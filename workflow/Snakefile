@@ -353,7 +353,7 @@ rule xcp_d:
         "rm -rf {params.workflow_dir}/working_dir && "
         "xcp_d "
         "{params.out_dir}/fmriprep "
-        "{params.out_dir}/xcp_d "
+        "{params.out_dir}/xcp_d_26.1.0 "
         "participant "
         "--participant-label {wildcards.subid} "
         # "--session-id 1 2 "
