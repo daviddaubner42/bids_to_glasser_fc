@@ -22,7 +22,7 @@ endfiles = [
     # In this case, it is the average time series for each of the ROIs, and the FC matrix
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-1",
         "func",
@@ -30,7 +30,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-1",
         "func",
@@ -38,7 +38,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-1",
         "func",
@@ -46,7 +46,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-1",
         "func",
@@ -54,7 +54,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-2",
         "func",
@@ -62,7 +62,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-2",
         "func",
@@ -70,7 +70,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-2",
         "func",
@@ -78,7 +78,7 @@ endfiles = [
     ),
     os.path.join(
         outdir,
-        "xcp_d_26.1.0(2)",
+        "xcp_d_26.1.0_2",
         "sub-{subid}",
         "ses-2",
         "func",
@@ -285,7 +285,7 @@ rule xcp_d:
     output:
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-1",
             "func",
@@ -293,7 +293,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-1",
             "func",
@@ -301,7 +301,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-1",
             "func",
@@ -309,7 +309,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-1",
             "func",
@@ -317,7 +317,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-2",
             "func",
@@ -325,7 +325,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-2",
             "func",
@@ -333,7 +333,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-2",
             "func",
@@ -341,7 +341,7 @@ rule xcp_d:
         ),
         os.path.join(
             outdir,
-            "xcp_d_26.1.0(2)",
+            "xcp_d_26.1.0_2",
             "sub-{subid}",
             "ses-2",
             "func",
@@ -353,7 +353,7 @@ rule xcp_d:
         "rm -rf {params.workflow_dir}/working_dir && "
         "xcp_d "
         "{params.out_dir}/fmriprep "
-        "{params.out_dir}/xcp_d_26.1.0(2) "
+        "{params.out_dir}/xcp_d_26.1.0_2 "
         "participant "
         "--participant-label {wildcards.subid} "
         # "--session-id 1 2 "
