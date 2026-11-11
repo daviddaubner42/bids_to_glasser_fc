@@ -19,3 +19,6 @@ If you want to use different XCP-D preprocessing parameters than the default one
 
 To run the pipeline, launch a terminal in the `rootdir` specified in the `config/config.yaml` (the one where you cloned this repository), and run `snakemake --cores all --sdm apptainer --singularity-args="--cleanenv -B $DATADIR:$DATADIR -B $ROOTDIR:$ROOTDIR"` (or whatever the desired number of cores is).
 The singularity arguments clear environmental variables and bind the data and pipeline directories into the container, to avoid naming conflicts inside the containers.
+
+To run the pipeline on a cluster with SLURM scheduling, use the following command
+`snakemake --cores all --sdm apptainer --executor slurm --singularity-args="--cleanenv -B $DATADIR:$DATADIR -B $ROOTDIR:$ROOTDIR`
