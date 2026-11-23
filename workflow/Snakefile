@@ -36,9 +36,9 @@ endfiles = [
 ]
 
 # Define the subject IDs to be processed
-subids = ["LEGK010"]
+# subids = ["LEGK010"]
 # E.g. this should select all the subject IDs present in your BIDS directory
-# subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
+subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
 
 
 rule all:

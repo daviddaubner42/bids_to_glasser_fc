@@ -1,7 +1,7 @@
 # Specify the directories on your systems
 
 # The BIDS directory with data to be processed
-datadir: 
+datadir: /data/pnl/U01_HCP_Psychosis/data_processing/BIDS/rawdata/
 # The directory with the Snakemake pipeline specification (this repository)
 rootdir: 
 
