@@ -5,8 +5,8 @@ from os.path import join
 configfile: "config/config.yaml"
 report: "workflow.rst"
 
-rawdir = join(config["datadir"]) # the directory with data to be processed
-outdir = join(config["datadir"], "derivatives") # the directory where derivatives are to be stored
+rawdir = join(config["datadir"], "rawdata") # the directory with data to be processed
+outdir = join(config["datadir"], "derivatives", "BSS") # the directory where derivatives are to be stored
 
 environmentdir = join(config["rootdir"], "envs")
 resourcedir = join(config["rootdir"], "resources")
