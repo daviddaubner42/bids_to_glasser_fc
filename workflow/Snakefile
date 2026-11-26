@@ -1,88 +1,150 @@
 import os
+import json
+from glob import glob
 from os.path import join
 
 
 configfile: "config/config.yaml"
 report: "workflow.rst"
 
-rawdir = join(config["datadir"], "rawdata") # the directory with data to be processed
-outdir = join(config["datadir"], "derivatives", "BSS") # the directory where derivatives are to be stored
+rawdir = join(config["datadir"], "rawdata")  # raw BIDS data (read-only, never modified)
+outdir = join(config["datadir"], "derivatives", "BSS")  # derivatives
 
 environmentdir = join(config["rootdir"], "envs")
 resourcedir = join(config["rootdir"], "resources")
 workflowdir = join(config["rootdir"], "workflow")
 
-
-# Create the results directory if it doesn't exist already
 os.makedirs(outdir, exist_ok=True)
 
-# Specifies the files which should exist at the end of the processing
-endfiles = [
-    # In this case, it is the average time series for each of the ROIs, and the FC matrix
-    os.path.join(
-        outdir,
-        "xcp_d",
-        "sub-{subid}",
-        "func",
-        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
-    ),
-    os.path.join(
-        outdir,
-        "xcp_d",
-        "sub-{subid}",
-        "func",
-        "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
-    )
+# ---------------------------------------------------------------------------
+# Dataset layout
+# ---------------------------------------------------------------------------
+SES = "ses-1"
+ACQS = ["AP", "PA"]
+RUNS = [1, 2]
+
+# The four resting-state BOLD acquisitions per subject, each treated as a
+# SEPARATE run (no concatenation / combination anywhere in the pipeline).
+BOLD_STEMS = [
+    f"task-rest_acq-{acq}_run-{run}" for acq in ACQS for run in RUNS
 ]
 
-# Define the subject IDs to be processed
-# subids = ["LEGK010"]
-# E.g. this should select all the subject IDs present in your BIDS directory
-subids = [i[4:] for i in os.listdir(rawdir) if i.startswith('sub-')]
+
+def bold_raw(stem, ext="nii.gz"):
+    return join(rawdir, "sub-{subid}", SES, "func", f"sub-{{subid}}_{SES}_{stem}_bold.{ext}")
+
+
+def fmriprep_out(stem):
+    return join(outdir, "fmriprep", "sub-{subid}", SES, "func",
+                f"sub-{{subid}}_{SES}_{stem}_space-fsLR_den-91k_bold.dtseries.nii")
+
+
+def xcpd_out(stem):
+    return join(outdir, "xcp_d", "sub-{subid}", SES, "func",
+                f"sub-{{subid}}_{SES}_{stem}_space-fsLR_atlas-Glasser_den-91k_stat-mean_timeseries.ptseries.nii")
+
+
+FMRIPREP_OUTPUTS = [fmriprep_out(s) for s in BOLD_STEMS]
+XCPD_OUTPUTS = [xcpd_out(s) for s in BOLD_STEMS]
+
+# Only subjects that actually have the expected session
+subids = sorted(
+    d[4:] for d in os.listdir(rawdir)
+    if d.startswith("sub-") and os.path.isdir(join(rawdir, d, SES))
+)
+
+
+def fmap_files(wildcards, ext):
+    """All spin-echo EPI fieldmaps (every AP/PA run) for this subject/session."""
+    pattern = join(rawdir, f"sub-{wildcards.subid}", SES, "fmap",
+                   f"sub-{wildcards.subid}_{SES}_acq-func_dir-*_run-*_epi.{ext}")
+    return sorted(glob(pattern))
 
 
 rule all:
     """
-    Generates all required outputs
+    Generates all required outputs: one Glasser ROI time series per BOLD run
+    (AP/PA x run 1/2) per subject.
     """
     input:
-        expand(endfiles, subid=subids)
+        expand(XCPD_OUTPUTS, subid=subids)
+
+
+# Verify (read-only) that the fieldmaps can be associated with the BOLD runs
+# through BIDS metadata (IntendedFor, or B0FieldIdentifier/B0FieldSource).
+# The raw dataset is never modified; if this check fails, a derived BIDS
+# overlay with corrected metadata should be created instead.
+rule check_fmap_metadata:
+    input:
+        fmap_json=lambda wc: fmap_files(wc, "json"),
+        bold_json=[bold_raw(s, "json") for s in BOLD_STEMS],
+    output:
+        os.path.join(outdir, "checks", "sub-{subid}_fmap_metadata.ok")
+    run:
+        fmap_meta = {f: json.load(open(f)) for f in input.fmap_json}
+        if not fmap_meta:
+            raise ValueError(f"No fieldmap JSONs found for sub-{wildcards.subid}")
+
+        problems = []
+        for bj in input.bold_json:
+            bname = os.path.basename(bj).replace(".json", ".nii.gz")
+            bmeta = json.load(open(bj))
+            sources = bmeta.get("B0FieldSource", [])
+            sources = [sources] if isinstance(sources, str) else sources
+
+            matched = []
+            for fj, fm in fmap_meta.items():
+                intended = fm.get("IntendedFor", [])
+                intended = [intended] if isinstance(intended, str) else intended
+                if any(i.endswith(bname) for i in intended):
+                    matched.append(os.path.basename(fj))
+                ids = fm.get("B0FieldIdentifier", [])
+                ids = [ids] if isinstance(ids, str) else ids
+                if sources and set(ids) & set(sources):
+                    matched.append(os.path.basename(fj))
+
+            if not matched:
+                problems.append(f"{bname}: no fieldmap associated via metadata")
+
+        if problems:
+            raise ValueError(
+                f"Fieldmap association problems for sub-{wildcards.subid}:\n  "
+                + "\n  ".join(problems)
+            )
+
+        os.makedirs(os.path.dirname(output[0]), exist_ok=True)
+        with open(output[0], "w") as fh:
+            fh.write("fieldmap metadata OK\n")
+
 
 # Apply fMRIPrep preprocessing pipeline to the data
 # https://fmriprep.org/en/stable/
 rule fmriprep:
     input:
-        os.path.join(rawdir, "sub-{subid}", "anat", "sub-{subid}_T1w.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "anat", "sub-{subid}_T2w.nii.gz"), # comment out if your data does not contain T2
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_magnitude1.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_magnitude2.nii.gz"),
-        os.path.join(rawdir, "sub-{subid}", "fmap", "sub-{subid}_phasediff.nii.gz"),
-        os.path.join(
-            rawdir,
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_bold.nii.gz"
-        )
+        t1w=join(rawdir, "sub-{subid}", SES, "anat", f"sub-{{subid}}_{SES}_T1w.nii.gz"),
+        t2w=join(rawdir, "sub-{subid}", SES, "anat", f"sub-{{subid}}_{SES}_T2w.nii.gz"),  # comment out if no T2w
+        bold=[bold_raw(s) for s in BOLD_STEMS],
+        bold_json=[bold_raw(s, "json") for s in BOLD_STEMS],
+        fmap=lambda wc: fmap_files(wc, "nii.gz"),
+        fmap_json=lambda wc: fmap_files(wc, "json"),
+        fmap_check=os.path.join(outdir, "checks", "sub-{subid}_fmap_metadata.ok"),
     params:
         bids_dir=rawdir,
         out_dir=outdir,
-        fs_license_dir=resourcedir
-    threads: 8
+        fs_license_dir=resourcedir,
+        work_dir=join(workflowdir, "fmriprep_work_dir", "sub-{subid}"),
+        mem_mb=76000,
+    threads: 16
     resources:
-        mem='16G',
-        time='12:00:00'
+        mem='80G',
+        time='24:00:00'
     output:
-        os.path.join(
-            outdir,
-            "fmriprep",
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
-        )
+        FMRIPREP_OUTPUTS
     container:
         config["containers"]["fmriprep"]
     shell:
-        "rm -rf {params.out_dir}/freesurfer/sub-{wildcards.subid} && "
+        "mkdir -p {params.work_dir} && "
+        "rm -rf {params.out_dir}/fmriprep/sourcedata/freesurfer/sub-{wildcards.subid} && "
         "fmriprep "
         "{params.bids_dir} {params.out_dir}/fmriprep participant "
         "--fs-license-file {params.fs_license_dir}/license.txt "
@@ -90,61 +152,48 @@ rule fmriprep:
         "--participant_label {wildcards.subid} "
         "--output-spaces MNI152NLin2009cAsym:res-2 fsLR "
         "--cifti-output "
-        "--skip-bids-validation "
-        "--nthreads 16 "
-        "--omp-nthreads 16"
+        "--nthreads {threads} "
+        "--omp-nthreads {threads} "
+        "--mem-mb {params.mem_mb} "
+        "--work-dir {params.work_dir} && "
+        "rm -rf {params.work_dir}"
 
 
-# Apply XCP-D to the fMRIPrep processed data using the Desikan-Killiany atlas we created from FreeSurfer parcellation
-# To change the preprocessing parameters, such as the smoothing kernel width, confounds to be used for denoising, etc.
-# you can change the command line arguments to XCP-D in the shell command bellow. The usage instructions can be found here:
-# https://xcp-d.readthedocs.io/en/latest/usage.html#command-line-arguments
+# Apply XCP-D to the fMRIPrep CIFTI outputs. Each BOLD run is denoised and
+# parcellated separately (no run combination).
+# Options: https://xcp-d.readthedocs.io/en/latest/usage.html#command-line-arguments
 rule xcp_d:
     input:
-        os.path.join(
-            outdir,
-            "fmriprep",
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_space-fsLR_den-91k_bold.dtseries.nii"
-        )
+        FMRIPREP_OUTPUTS
     params:
         out_dir=outdir,
         fs_license_dir=resourcedir,
-        workflow_dir=workflowdir
+        work_dir=join(workflowdir, "xcpd_work_dir", "sub-{subid}"),  # subject-specific
+        mem_mb=76000,
     threads: 8
     resources:
-        mem='32G',
+        mem='80G',
         time='12:00:00'
     output:
-        os.path.join(
-            outdir,
-            "xcp_d",
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-mean_timeseries.ptseries.nii"
-        ),
-        os.path.join(
-            outdir,
-            "xcp_d",
-            "sub-{subid}",
-            "func",
-            "sub-{subid}_task-rest_space-fsLR_seg-Glasser_den-91k_stat-pearsoncorrelation_boldmap.pconn.nii"
-        )
+        XCPD_OUTPUTS
     container:
         config["containers"]["xcp_d"]
     shell:
-        "rm -rf {params.workflow_dir}/working_dir && "
+        "mkdir -p {params.work_dir} && "
         "xcp_d "
         "{params.out_dir}/fmriprep "
         "{params.out_dir}/xcp_d "
         "participant "
         "--participant-label {wildcards.subid} "
         "--mode linc "
+        "--combine-runs n "
         "--despike "
         "--nuisance-regressors acompcor "
         "--atlases Glasser "
         "--head_radius 40 "
         "--fs-license-file {params.fs_license_dir}/license.txt "
         "--smoothing 6 "
-        "--n_cpus 16"
+        "--n_cpus {threads} "
+        "--mem-mb {params.mem_mb} "
+        "--work-dir {params.work_dir} && "
+        "rm -rf {params.work_dir}"
